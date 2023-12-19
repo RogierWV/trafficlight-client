@@ -1,6 +1,6 @@
-:80
+:80, :443
 reverse_proxy /ws {$BACKEND}
 encode gzip zstd
-root /static
+# root * /static
 try_files {path}.html {path} index.html
 file_server
