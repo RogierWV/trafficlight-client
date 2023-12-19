@@ -1,0 +1,6 @@
+:80
+reverse_proxy /ws {$BACKEND}
+encode gzip zstd
+root /static
+try_files {path}.html {path} index.html
+file_server
