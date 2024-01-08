@@ -1,6 +1,20 @@
-:80, :443
-reverse_proxy /ws {$BACKEND}
-encode gzip zstd
-# root * /static
-try_files {path}.html {path} index.html
-file_server
+{
+	auto_https off
+}
+
+bind :80 {
+	log
+	handle_path /ws {
+		@ws {
+			header Connection *Upgrade*
+			header Upgrade websocket
+		}
+		reverse_proxy @ws {$BACKEND}
+	}
+	handle_path /* {
+		encode gzip zstd
+		# root * /static
+		try_files {path}.html {path} index.html
+		file_server
+	}
+}
